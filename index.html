@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Serbian Flashcards</title>
+
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body{
+      margin:0;
+      font-family: system-ui, Arial, sans-serif;
+      background:#f6f7fb;
+      color:#111;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header{
+      padding:12px;
+      background:#ffffffcc;
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid #e6e6ee;
+      position:sticky;
+      top:0;
+    }
+
+    .bar{
+      max-width:800px;
+      margin:auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid #ddd;
+      background:#fff;
+      font-size:16px;
+      cursor:pointer;
+      min-height:48px;
+    }
+
+    .btn-primary{
+      background:#111;
+      color:#fff;
+      border-color:#111;
+    }
+
+    main{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    .card{
+      background:#fff;
+      border-radius:20px;
+      padding:20px;
+      width:min(700px,100%);
+      box-shadow:0 10px 25px rgba(0,0,0,.07);
+      border:1px solid #e6e6ee;
+    }
+
+    .lang{
+      font-size:13px;
+      padding:5px 10px;
+      border-radius:999px;
+      background:#f2f2f8;
+      display:inline-block;
+      margin-bottom:10px;
+    }
+
+    .word{
+      font-size:36px;
+      font-weight:800;
+      margin:10px 0;
+      word-break:break-word;
+    }
+
+    .example{
+      font-size:16px;
+      color:#333;
+      min-height:24px;
+    }
+
+    .controls{
+      margin-top:15px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .status{
+      margin-left:auto;
+      font-size:14px;
+      color:#444;
+    }
+
+    .error{
+      background:#fff2f2;
+      border:1px solid #ffd0d0;
+      padding:14px;
+      border-radius:12px;
+      color:#700;
+      max-width:700px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="bar">
+    <button id="prevBtn" class="btn">← Назад</button>
+    <button id="nextBtn" class="btn btn-primary">Следующее →</button>
+    <button id="shuffleBtn" class="btn">Перемешать</button>
+    <div id="status" class="status">Загрузка...</div>
+  </div>
+</header>
+
+<main>
+  <div id="error" class="error" style="display:none"></div>
+
+  <div id="card" class="card" style="display:none">
+
+    <div id="lang" class="lang">SR</div>
+
+    <div id="word" class="word">—</div>
+    <div id="example" class="example"></div>
+
+    <div class="controls">
+      <button id="toggleBtn" class="btn btn-primary">Показать перевод</button>
+      <button id="rerollBtn" class="btn">Случайная сторона</button>
+    </div>
+
+  </div>
+</main>
+
+<script>
+
+let words = [];
+let index = 0;
+let front = "sr";
+let flipped = false;
+let history = [];
+
+const wordEl = document.getElementById("word");
+const exampleEl = document.getElementById("example");
+const langEl = document.getElementById("lang");
+const statusEl = document.getElementById("status");
+const cardEl = document.getElementById("card");
+const errorEl = document.getElementById("error");
+
+function randomSide(){
+  return Math.random() < 0.5 ? "sr" : "ru";
+}
+
+function render(){
+  const w = words[index];
+
+  const back = front === "sr" ? "ru" : "sr";
+  const side = flipped ? back : front;
+
+  wordEl.textContent = w[side] || "";
+  exampleEl.textContent = w[side + "_example"] || "";
+  langEl.textContent = side.toUpperCase();
+
+  statusEl.textContent = `Карточка ${index + 1} / ${words.length}`;
+  document.getElementById("toggleBtn").textContent = flipped ? "Скрыть" : "Показать перевод";
+}
+
+function next(){
+  history.push({index, front, flipped});
+  index = (index + 1) % words.length;
+  front = randomSide();
+  flipped = false;
+  render();
+}
+
+function prev(){
+  const h = history.pop();
+  if(!h) return;
+  index = h.index;
+  front = h.front;
+  flipped = h.flipped;
+  render();
+}
+
+function toggle(){
+  flipped = !flipped;
+  render();
+}
+
+function shuffleArray(a){
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+}
+
+function reshuffle(){
+  shuffleArray(words);
+  index = 0;
+  front = randomSide();
+  flipped = false;
+  history = [];
+  render();
+}
+
+document.getElementById("nextBtn").onclick = next;
+document.getElementById("prevBtn").onclick = prev;
+document.getElementById("toggleBtn").onclick = toggle;
+document.getElementById("rerollBtn").onclick = () => {
+  front = randomSide();
+  flipped = false;
+  render();
+};
+document.getElementById("shuffleBtn").onclick = reshuffle;
+
+document.addEventListener("keydown", e => {
+  if(e.code === "Space"){ e.preventDefault(); toggle(); }
+  if(e.code === "ArrowRight") next();
+  if(e.code === "ArrowLeft") prev();
+});
+
+async function load(){
+  try{
+    const res = await fetch("words.json");
+    words = await res.json();
+
+    if(!words.length) throw "words.json пустой";
+
+    reshuffle();
+    cardEl.style.display = "block";
+
+  }catch(err){
+    errorEl.style.display = "block";
+    errorEl.textContent = "Ошибка загрузки words.json";
+  }
+}
+
+// PWA
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js");
+}
+
+load();
+
+</script>
+
+</body>
+</html>
