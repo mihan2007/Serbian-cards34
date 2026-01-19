@@ -1,0 +1,92 @@
+[
+  {
+    "sr": "Uzgred",
+    "sr_example": "Uzgred, hteo sam da te pitam nešto.",
+    "ru": "Кстати",
+    "ru_example": "Кстати, я хотел тебя кое о чём спросить."
+  },
+  {
+    "sr": "Ćorsokak",
+    "sr_example": "Osećam da sam došao u ćorsokak.",
+    "ru": "Тупик",
+    "ru_example": "Я чувствую, что зашёл в тупик."
+  },
+  {
+    "sr": "Oprezno",
+    "sr_example": "Hodaj oprezno po ledu.",
+    "ru": "Осторожно",
+    "ru_example": "Иди осторожно по льду."
+  },
+  {
+    "sr": "Otprilike",
+    "sr_example": "Stići ću otprilike za sat vremena.",
+    "ru": "Примерно",
+    "ru_example": "Я приеду примерно через час."
+  },
+  {
+    "sr": "Razlog",
+    "sr_example": "To je glavni razlog moje odluke.",
+    "ru": "Причина",
+    "ru_example": "Это главная причина моего решения."
+  },
+  {
+    "sr": "Radoznalost",
+    "sr_example": "Radoznalost ga je naterala da pita.",
+    "ru": "Любопытство",
+    "ru_example": "Любопытство заставило его спросить."
+  },
+  {
+    "sr": "Početak",
+    "sr_example": "Svaki početak je težak.",
+    "ru": "Начало",
+    "ru_example": "Каждое начало трудное."
+  },
+  {
+    "sr": "Osećaj",
+    "sr_example": "Imam čudan osećaj.",
+    "ru": "Чувство",
+    "ru_example": "У меня странное чувство."
+  },
+  {
+    "sr": "Zbunim",
+    "sr_example": "Ne želim da te zbunim.",
+    "ru": "Запутать",
+    "ru_example": "Я не хочу тебя запутать."
+  },
+  {
+    "sr": "Činjenica",
+    "sr_example": "To je važna činjenica.",
+    "ru": "Факт",
+    "ru_example": "Это важный факт."
+  },
+  {
+    "sr": "Brdo",
+    "sr_example": "Imam brdo posla danas.",
+    "ru": "Куча",
+    "ru_example": "У меня сегодня куча дел."
+  },
+  {
+    "sr": "Prilika",
+    "sr_example": "Ovo je dobra prilika za učenje.",
+    "ru": "Возможность",
+    "ru_example": "Это хорошая возможность для обучения."
+  },
+  {
+    "sr": "Veštine",
+    "sr_example": "Razvija svoje veštine svaki dan.",
+    "ru": "Навыки",
+    "ru_example": "Он развивает свои навыки каждый день."
+  },
+  {
+    "sr": "Kasnim",
+    "sr_example": "Izvini, kasnim na sastanak.",
+    "ru": "Опаздываю",
+    "ru_example": "Извини, я опаздываю на встречу."
+  },
+  {
+    "sr": "Ljubomoran",
+    "sr_example": "Postao je ljubomoran bez razloga.",
+    "ru": "Ревнивый",
+    "ru_example": "Он стал ревнивым без причины."
+  }
+]
